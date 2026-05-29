@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- SEO Meta Tags -->
+  <title>Rodney Osumo | Creative Developer & Game Designer Portfolio</title>
+  <meta name="description" content="Explore the creative game design portfolio of Rodney Osumo. Play 'Slum Runner', an interactive 2D infinite sidescroller, and discover premium web projects.">
+  <meta name="keywords" content="Creative Developer, Game Design, HTML5 Canvas, Portfolio, Slum Runner, Web Audio API, Parallax Game, Frontend Engineer">
+  <meta name="author" content="Rodney Osumo">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Ambient Glow Shapes -->
+  <div class="ambient-glow glow-top-right"></div>
+  <div class="ambient-glow glow-mid-left"></div>
+  <div class="ambient-glow glow-bottom"></div>
+
+  <!-- Header / Navigation -->
+  <header id="header">
+    <div class="container">
+      <a href="#" class="logo">
+        <span class="logo-icon">R</span>
+        <span>RODNEY<span class="gradient-text">OSUMO</span></span>
+      </a>
+      
+      <button class="mobile-menu-toggle" id="menu-toggle" aria-label="Toggle navigation menu">☰</button>
+      
+      <nav id="nav-menu">
+        <ul>
+          <li><a href="#" class="active" id="nav-home">Home</a></li>
+          <li><a href="#about" id="nav-about">Resilience</a></li>
+          <li><a href="#skills" id="nav-skills">Skills</a></li>
+          <li><a href="#projects" id="nav-projects">Projects</a></li>
+          <li><a href="#contact" id="nav-contact">Get in Touch</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section & Interactive Arcade Cabinet -->
+  <section class="hero-section" id="hero">
+    <div class="container hero-grid">
+      
+      <div class="hero-content fade-in-on-scroll">
+        <span class="section-tag">Interactive Showcase</span>
+        <h1>Dodging obstacles, <br><span class="gradient-text">building dreams.</span></h1>
+        <p>I am Rodney Osumo, a creative frontend developer and game engineer. I build immersive web experiences that combine rich visual aesthetics with robust interactivity. Play the game on the right to see my skills in action.</p>
+        
+        <div class="hero-actions">
+          <a href="#projects" class="btn btn-primary">View Works</a>
+          <a href="#contact" class="btn btn-secondary">Let's Talk</a>
+        </div>
+      </div>
+      
+      <!-- Retro Arcade Game Cabinet -->
+      <div class="game-cabinet-container fade-in-on-scroll">
+        <div class="arcade-cabinet">
+          <!-- Marquee Decal -->
+          <div class="cabinet-marquee">
+            <div class="marquee-lights">
+              <span class="light-dot"></span>
+              <span class="light-dot"></span>
+            </div>
+            <h2 class="marquee-title">SLUM RUNNER</h2>
+            <div class="marquee-lights">
+              <span class="light-dot"></span>
+              <span class="light-dot"></span>
+            </div>
+          </div>
+          
+          <!-- Cabinet Screen -->
+          <div class="game-screen-wrapper">
+            <!-- Game HUD Overlay -->
+            <div id="game-hud" style="position: absolute; top: 1rem; left: 1rem; right: 1rem; display: flex; justify-content: space-between; font-weight: 700; font-size: 0.95rem; z-index: 8; opacity: 0; pointer-events: none; text-shadow: 0 2px 4px rgba(0,0,0,0.8); transition: opacity 0.3s ease;">
+              <div>SCORE: <span id="score-val" class="gradient-text">0</span></div>
+              <div>HIGH: <span id="highscore-val">0</span></div>
+            </div>
+
+            <!-- Start Overlay -->
+            <div class="screen-overlay" id="start-overlay">
+              <h3 class="overlay-title gradient-text">SLUM RUNNER</h3>
+              <p class="overlay-desc">Control a young boy navigating a rustic African slum. Help him leap over police barriers and duck under broken down old cars as he runs toward his dreams.</p>
+              <button class="btn btn-primary" id="btn-start-game" style="padding: 0.7rem 1.8rem; font-size: 0.9rem;">INSERT COIN & RUN</button>
+              <p style="font-size: 0.75rem; color: #a0a8c0; margin-top: 1rem;">Controls: SPACE / UP to Jump | DOWN to Slide</p>
+            </div>
+
+            <!-- Game Over Overlay -->
+            <div class="screen-overlay hidden" id="gameover-overlay">
+              <h3 class="overlay-title" style="color: #eb4d4b;">CRASHED</h3>
+              <p class="overlay-desc" id="final-score-text">Score: 0 | High Score: 0</p>
+              <button class="btn btn-primary" id="btn-restart-game" style="padding: 0.7rem 1.8rem; font-size: 0.9rem;">RUN AGAIN</button>
+            </div>
+
+            <!-- Canvas Screen -->
+            <canvas id="game-canvas"></canvas>
+          </div>
+          
+          <!-- Cabinet Controls Panel -->
+          <div class="cabinet-controls">
+            <div class="controls-joystick-pad">
+              <div class="retro-joystick">
+                <div class="joystick-handle" id="cabinet-joystick"></div>
+              </div>
+              <button class="arcade-btn btn-mute" id="btn-mute" aria-label="Mute sound effects">MUTE</button>
+            </div>
+            
+            <div class="controls-buttons">
+              <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                <button class="arcade-btn btn-jump" id="btn-jump" aria-label="Jump Button">A</button>
+                <span style="font-size: 0.65rem; font-weight: 700; color: #a0a8c0;">JUMP</span>
+              </div>
+              <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                <button class="arcade-btn btn-slide" id="btn-slide" aria-label="Slide Button">B</button>
+                <span style="font-size: 0.65rem; font-weight: 700; color: #a0a8c0;">SLIDE</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="control-hint">Interactive: Keyboard [Space/Arrows] or Cabinet buttons operate the game.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- About / Metaphor Section -->
+  <section id="about" class="container">
+    <div class="glass-card about-grid fade-in-on-scroll">
+      <div>
+        <span class="section-tag">Resilience & Story</span>
+        <h2 class="section-title">The Philosophy of <br><span class="gradient-text">Slum Runner</span></h2>
+        <p style="margin-top: 1.5rem; color: var(--text-secondary);">Growing up under scarce, high-barrier conditions teaches a developer the most crucial engineering skill of all: <strong>resourcefulness</strong>.</p>
+        <p style="margin-top: 1rem; color: var(--text-secondary);">'Slum Runner' represents the journey of a creative coder. The exaggerated big head represents intellectual curiosity and dreams. The broken-down cars are structural barriers that don't work, and the police barricades represent institutional gatekeeping. Dodging these obstacles is not just gameplay—it is a metaphor for inventing custom solutions, utilizing building blocks, and leaping forward against all odds.</p>
+      </div>
+      
+      <div class="about-features">
+        <div class="feature-box">
+          <div class="feature-icon">⚡</div>
+          <h4>Rapid Prototyping</h4>
+          <p>Iterating on interactions with fluid game engines, high frame rates, and sound feedback.</p>
+        </div>
+        <div class="feature-box">
+          <div class="feature-icon">🎨</div>
+          <h4>Aesthetic Excellence</h4>
+          <p>Curation of custom warm color gradients, ambient lighting effects, and fluid parallax shifts.</p>
+        </div>
+        <div class="feature-box">
+          <div class="feature-icon">🛡️</div>
+          <h4>Resourceful Physics</h4>
+          <p>Calculated canvas movement and math-based retro synthesis loops requiring zero heavy dependencies.</p>
+        </div>
+        <div class="feature-box">
+          <div class="feature-icon">💻</div>
+          <h4>Clean Architecture</h4>
+          <p>Object-oriented vanilla components decoupling entities (Player, Obstacle) for solid maintainability.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills Section -->
+  <section id="skills" class="container">
+    <div class="section-header fade-in-on-scroll">
+      <span class="section-tag">Technical Competency</span>
+      <h2 class="section-title">My Creative <span class="gradient-text">Arsenal</span></h2>
+    </div>
+    
+    <div class="glass-card skills-grid fade-in-on-scroll">
+      
+      <!-- Category 1 -->
+      <div class="skill-category">
+        <h3 class="skill-category-title">Interactive Frontend</h3>
+        
+        <div class="skill-bar-wrapper">
+          <div class="skill-info">
+            <span>HTML5 Canvas & 2D Animation</span>
+            <span>90%</span>
+          </div>
+          <div class="skill-bar"><div class="skill-progress" data-width="90%"></div></div>
+        </div>
+        
+        <div class="skill-bar-wrapper">
+          <div class="skill-info">
+            <span>Vanilla JavaScript (ES6+)</span>
+            <span>95%</span>
+          </div>
+          <div class="skill-bar"><div class="skill-progress" data-width="95%"></div></div>
+        </div>
+
+        <div class="skill-bar-wrapper">
+          <div class="skill-info">
+            <span>CSS3 Transitions & Layouts</span>
+            <span>92%</span>
+          </div>
+          <div class="skill-bar"><div class="skill-progress" data-width="92%"></div></div>
+        </div>
+      </div>
+
+      <!-- Category 2 -->
+      <div class="skill-category">
+        <h3 class="skill-category-title">Game Design</h3>
+        
+        <div class="skill-bar-wrapper">
+          <div class="skill-info">
+            <span>Web Audio API Sound Synthesis</span>
+            <span>85%</span>
+          </div>
+          <div class="skill-bar"><div class="skill-progress" data-width="85%"></div></div>
+        </div>
+
+        <div class="skill-bar-wrapper">
+          <div class="skill-info">
+            <span>2D Collision Math & Physics</span>
+            <span>88%</span>
+          </div>
+          <div class="skill-bar"><div class="skill-progress" data-width="88%"></div></div>
+        </div>
+
+        <div class="skill-bar-wrapper">
+          <div class="skill-info">
+            <span>AI Asset Generation & Editing</span>
+            <span>90%</span>
+          </div>
+          <div class="skill-bar"><div class="skill-progress" data-width="90%"></div></div>
+        </div>
+      </div>
+
+      <!-- Category 3 -->
+      <div class="skill-category">
+        <h3 class="skill-category-title">Frameworks & Tools</h3>
+        
+        <div class="skill-bar-wrapper">
+          <div class="skill-info">
+            <span>React & Next.js Ecosystem</span>
+            <span>85%</span>
+          </div>
+          <div class="skill-bar"><div class="skill-progress" data-width="85%"></div></div>
+        </div>
+
+        <div class="skill-bar-wrapper">
+          <div class="skill-info">
+            <span>Git / GitHub Workflows</span>
+            <span>90%</span>
+          </div>
+          <div class="skill-bar"><div class="skill-progress" data-width="90%"></div></div>
+        </div>
+
+        <div class="skill-bar-wrapper">
+          <div class="skill-info">
+            <span>Performance Optimizations</span>
+            <span>87%</span>
+          </div>
+          <div class="skill-bar"><div class="skill-progress" data-width="87%"></div></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Work Showcase -->
+  <section id="projects" class="container">
+    <div class="section-header fade-in-on-scroll">
+      <span class="section-tag">Showcase Works</span>
+      <h2 class="section-title">Selected <span class="gradient-text">Experiences</span></h2>
+    </div>
+
+    <div class="projects-grid">
+      <!-- Project 1 -->
+      <div class="glass-card project-card fade-in-on-scroll">
+        <div class="project-img">
+          <img src="assets/backdrop/layer3.png" alt="Slum Runner Parallax Background Layer">
+          <div class="project-tags">
+            <span class="project-tag">HTML5 Canvas</span>
+            <span class="project-tag">Physics</span>
+          </div>
+        </div>
+        <div class="project-body">
+          <h3>Slum Runner Game Engine</h3>
+          <p>An interactive, high-performance 2D infinite side-scrolling platformer utilizing multi-layered seamless parallax backdrop rendering and dynamic math physics loops.</p>
+          <div class="project-links">
+            <a href="#" class="project-link">Play Game &rarr;</a>
+            <a href="https://github.com/rodneyosumo-design/sidescroller-portfolio" target="_blank" rel="noopener" class="project-link">GitHub</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 2 -->
+      <div class="glass-card project-card fade-in-on-scroll">
+        <div class="project-img">
+          <img src="assets/character.png" alt="Exaggerated child character model" style="object-fit: contain; padding: 1.5rem; background: radial-gradient(circle, rgba(240, 147, 43, 0.1) 0%, transparent 80%);">
+          <div class="project-tags">
+            <span class="project-tag">Web Audio API</span>
+            <span class="project-tag">Synthesis</span>
+          </div>
+        </div>
+        <div class="project-body">
+          <h3>Retro Synth Sound Module</h3>
+          <p>Synthesizes sound effects entirely client-side inside the browser using oscillator pitches, noise buffers, and frequency exponential ramp parameters. No external audio files.</p>
+          <div class="project-links">
+            <a href="https://github.com/rodneyosumo-design/sidescroller-portfolio/blob/main/js/audio.js" target="_blank" rel="noopener" class="project-link">View Module &rarr;</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 3 -->
+      <div class="glass-card project-card fade-in-on-scroll">
+        <div class="project-img">
+          <img src="assets/backdrop/layer1.png" alt="Warm sunset parallax gradient backdrop">
+          <div class="project-tags">
+            <span class="project-tag">Creative CSS</span>
+            <span class="project-tag">Glassmorphism</span>
+          </div>
+        </div>
+        <div class="project-body">
+          <h3>Ambient Glass Layouts</h3>
+          <p>A beautiful responsive portfolio theme styling with warm tailormade color tokens, ambient backdrop filters, and intersection observers triggering animations on scroll.</p>
+          <div class="project-links">
+            <a href="#about" class="project-link">Observe Design &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Form -->
+  <section id="contact" class="container">
+    <div class="contact-grid">
+      <div class="contact-info fade-in-on-scroll">
+        <span class="section-tag">Collaboration</span>
+        <h2 class="section-title">Let's build <br><span class="gradient-text">together.</span></h2>
+        <p style="color: var(--text-secondary); margin-top: 1rem;">Have an interesting interactive concept, game design proposal, or frontend developer role? Reach out to collaborate!</p>
+        
+        <div style="margin-top: 2rem; display: flex; flex-direction: column; gap: 1.5rem;">
+          <div class="contact-item">
+            <div class="contact-icon">✉</div>
+            <div class="contact-details">
+              <h4>Email</h4>
+              <p>rodney.osumo.design@gmail.com</p>
+            </div>
+          </div>
+          
+          <div class="contact-item">
+            <div class="contact-icon">📍</div>
+            <div class="contact-details">
+              <h4>Location</h4>
+              <p>Nairobi, Kenya</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="glass-card fade-in-on-scroll">
+        <form class="contact-form" id="portfolio-contact-form" action="#" method="POST">
+          <div class="form-group-row">
+            <div class="form-group">
+              <label for="form-name">Your Name</label>
+              <input type="text" id="form-name" placeholder="John Doe" required>
+            </div>
+            <div class="form-group">
+              <label for="form-email">Your Email</label>
+              <input type="email" id="form-email" placeholder="john@example.com" required>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="form-subject">Subject</label>
+            <input type="text" id="form-subject" placeholder="Game proposal" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="form-message">Message</label>
+            <textarea id="form-message" rows="5" placeholder="Let's build a stunning new immersive site..." required></textarea>
+          </div>
+          
+          <button type="submit" class="btn btn-primary" style="margin-top: 1rem;">SEND MESSAGE</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-top">
+        <a href="#" class="logo">
+          <span class="logo-icon">R</span>
+          <span>RODNEY<span class="gradient-text">OSUMO</span></span>
+        </a>
+        
+        <div class="footer-socials">
+          <a href="https://github.com/rodneyosumo-design" class="social-icon" target="_blank" rel="noopener" aria-label="GitHub Link">GH</a>
+          <a href="#" class="social-icon" aria-label="LinkedIn Link">LN</a>
+          <a href="#" class="social-icon" aria-label="Twitter/X Link">X</a>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2026 Rodney Osumo. All rights reserved. Handcrafted with HTML, Canvas, and Synth.</p>
+        <p>Built with ❤️ and resilience.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Game & Portfolio Scripts -->
+  <script src="js/audio.js"></script>
+  <script src="js/character.js"></script>
+  <script src="js/obstacle.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
