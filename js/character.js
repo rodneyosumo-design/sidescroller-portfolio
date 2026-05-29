@@ -26,21 +26,41 @@ class Character {
     this.isDucking = false;
     
     // Dynamic Animations (Rotation, Scale)
-    this.runAngle = 0;
     this.rotation = 0; // double jump spin
     this.scaleY = 1;   // duck squish
     this.scaleX = 1;
     
+    // Multi-Sprite Loading
+    this.sprites = {
+      run1: new Image(),
+      run2: new Image(),
+      run3: new Image(),
+      jump: new Image(),
+      duck: new Image()
+    };
+    
+    this.sprites.run1.src = 'assets/character_run1.png';
+    this.sprites.run2.src = 'assets/character_run2.png';
+    this.sprites.run3.src = 'assets/character_run3.png';
+    this.sprites.jump.src = 'assets/character_jump.png';
+    this.sprites.duck.src = 'assets/character_duck.png';
+    
+    this.loadedSpritesCount = 0;
+    const onSpriteLoad = () => {
+      this.loadedSpritesCount++;
+    };
+    
+    Object.values(this.sprites).forEach(img => {
+      img.onload = onSpriteLoad;
+    });
+
+    // Run Cycle Animation State
+    this.runFrameTimer = 0;
+    this.runFrameSequence = ['run1', 'run2', 'run3', 'run2'];
+    this.currentFrameKey = 'run1';
+    
     // Dust Particles
     this.particles = [];
-    
-    // Asset Loading
-    this.sprite = new Image();
-    this.sprite.src = 'assets/character.png';
-    this.spriteLoaded = false;
-    this.sprite.onload = () => {
-      this.spriteLoaded = true;
-    };
   }
 
   jump() {
@@ -112,11 +132,11 @@ class Character {
       }
     }
 
-    // Character bounce/tilt run animation when on ground
+    // Dynamic Run Stride transitions based on speed
     if (!this.isJumping && !this.isDucking) {
-      this.runAngle += 0.15;
-    } else {
-      this.runAngle = 0;
+      this.runFrameTimer += gameSpeed * 0.022; // speeds up cycle as player runs faster
+      const seqIndex = Math.floor(this.runFrameTimer) % this.runFrameSequence.length;
+      this.currentFrameKey = this.runFrameSequence[seqIndex];
     }
 
     // Particle Updates
@@ -186,26 +206,32 @@ class Character {
     if (this.isJumping && !this.doubleJumpAvailable) {
       // Double jump spin
       ctx.rotate(this.rotation);
-    } else if (!this.isJumping && !this.isDucking) {
-      // Running tilt tilt effect
-      const tilt = Math.sin(this.runAngle) * 0.08;
-      ctx.rotate(tilt);
     } else if (this.isDucking) {
       // Ducking slight forward lean
       ctx.rotate(0.05);
     }
 
-    if (this.spriteLoaded) {
-      // Offset sprite center to translated coordinate
+    // Determine the active sprite image
+    let activeImage = null;
+    if (this.isJumping) {
+      activeImage = this.sprites.jump;
+    } else if (this.isDucking) {
+      activeImage = this.sprites.duck;
+    } else {
+      activeImage = this.sprites[this.currentFrameKey];
+    }
+
+    // Check if the required sprite is fully loaded
+    if (this.loadedSpritesCount >= 5 && activeImage && activeImage.complete) {
       ctx.drawImage(
-        this.sprite,
+        activeImage,
         -this.width / 2,
         -this.height / 2,
         this.width,
         this.height
       );
     } else {
-      // Fallback elegant avatar representation if image is slow loading
+      // Fallback elegant avatar representation if images are slow loading
       ctx.fillStyle = '#f0932b';
       ctx.beginPath();
       ctx.arc(0, -10, 22, 0, Math.PI * 2); // exaggerated big head
@@ -228,5 +254,7 @@ class Character {
     this.scaleY = 1;
     this.scaleX = 1;
     this.particles = [];
+    this.runFrameTimer = 0;
+    this.currentFrameKey = 'run1';
   }
 }
